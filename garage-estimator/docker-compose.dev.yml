@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/tmp
+    env_file:
+      - .env
+
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000
+      - VITE_RECAPTCHA_SITE_KEY=${VITE_RECAPTCHA_SITE_KEY}
+    command: pnpm dev
+    depends_on:
+      - api

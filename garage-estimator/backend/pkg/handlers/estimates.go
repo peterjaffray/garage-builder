@@ -9,14 +9,16 @@ import (
 
 // EstimateRequest defines the structure of incoming data
 type EstimateRequest struct {
-	Name     string   `json:"name"`
-	Email    string   `json:"email"`
-	Width    int      `json:"width"`
-	Length   int      `json:"length"`
-	Height   int      `json:"height"`
-	Material string   `json:"material"`
-	Features []string `json:"features"`
-	Message  string   `json:"message,omitempty"`
+	Name         string                 `json:"name"`
+	Email        string                 `json:"email"`
+	Phone        string                 `json:"phone,omitempty"`
+	Width        int                    `json:"width"`
+	Length       int                    `json:"length"`
+	Height       int                    `json:"height"`
+	Material     string                 `json:"material"`
+	Features     []string               `json:"features"`
+	Message      string                 `json:"message,omitempty"`
+	GarageConfig map[string]interface{} `json:"garageConfig,omitempty"`
 }
 
 // EstimateResponse returns the full estimate object
@@ -67,7 +69,22 @@ func EstimateHandler(w http.ResponseWriter, r *http.Request) {
 	// Add features cost
 	featureCost := len(req.Features) * 500 // $500 per feature
 	
-	totalCost := int(float64(baseCost) * materialMultiplier) + featureCost
+	// Add additional costs based on garage configuration
+	configCost := 0
+	if config, ok := req.GarageConfig["roofDesign"].(string); ok {
+		// Premium roof designs cost more
+		if config == "dutchGable1" || config == "dummyDutchGable1" || config == "cottage" {
+			configCost += 2000
+		}
+	}
+	if config, ok := req.GarageConfig["atticStorage"].(string); ok && config == "yes" {
+		configCost += 3000
+	}
+	if config, ok := req.GarageConfig["buildRequest"].(string); ok && config == "yes" {
+		configCost += sqft * 15 // $15 per sqft for labor
+	}
+	
+	totalCost := int(float64(baseCost) * materialMultiplier) + featureCost + configCost
 	
 	now := time.Now()
 	resp := EstimateResponse{

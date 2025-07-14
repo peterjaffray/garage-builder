@@ -4,21 +4,20 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	"garage-estimator/backend/pkg/handlers"
+	"garage-estimator/pkg/handlers"
 )
 
 func main() {
 	// Load environment variables in development
 
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("BACKEND_PORT")
 	if port == "" {
-		port = "3000"
+		port = "8080"
 	}
 
 	// Routes

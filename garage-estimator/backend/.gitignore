@@ -1,0 +1,23 @@
+# Air live reload
+tmp/
+*.tmp
+
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
+
+# Test binaries
+*.test
+
+# Go coverage
+*.out
+
+# Environment files
+.env.local
+
+# Dependency directories
+vendor/
