@@ -7,7 +7,7 @@ const LoftTypeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNext
       value: 'loft', 
       label: 'Loft',
       description: 'Open mezzanine level with railing',
-      features: 'Accessible by stairs, open to below'
+      features: 'Accessible by stairs or ladder, open to below'
     },
     { 
       value: 'attic', 

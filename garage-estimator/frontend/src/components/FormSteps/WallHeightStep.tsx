@@ -5,7 +5,7 @@ const WallHeightStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNe
   const heights = [
     { value: '8', label: "8 feet", description: "Standard height" },
     { value: '9', label: "9 feet", description: "Extra headroom" },
-    { value: '10', label: "10 feet", description: "Maximum height" }
+    { value: '10', label: "10 feet", description: "Even more headroom" }
   ] as const;
 
   const handleSelect = (height: '8' | '9' | '10') => {
