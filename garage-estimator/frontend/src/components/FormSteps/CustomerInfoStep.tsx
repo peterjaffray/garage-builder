@@ -52,7 +52,7 @@ const CustomerInfoStep: React.FC<StepComponentProps> = ({ formData, onUpdate, on
             type="text"
             value={formData.customerName || ''}
             onChange={(e) => onUpdate({ customerName: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
             required
           />
         </div>
@@ -65,7 +65,7 @@ const CustomerInfoStep: React.FC<StepComponentProps> = ({ formData, onUpdate, on
             type="email"
             value={formData.customerEmail || ''}
             onChange={(e) => onUpdate({ customerEmail: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
             required
           />
         </div>
@@ -78,7 +78,7 @@ const CustomerInfoStep: React.FC<StepComponentProps> = ({ formData, onUpdate, on
             type="tel"
             value={formData.customerPhone || ''}
             onChange={(e) => onUpdate({ customerPhone: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
           />
         </div>
         
@@ -90,7 +90,7 @@ const CustomerInfoStep: React.FC<StepComponentProps> = ({ formData, onUpdate, on
             value={formData.message || ''}
             onChange={(e) => onUpdate({ message: e.target.value })}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
             placeholder="Any special requirements, questions, or preferences for doors, windows, electrical options?"
           />
         </div>
@@ -106,7 +106,7 @@ const CustomerInfoStep: React.FC<StepComponentProps> = ({ formData, onUpdate, on
         </button>
         <button
           type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-6 py-2 rounded-md focus:outline-none focus:ring-2 primary-button focus-ring"
         >
           Get Quote
         </button>

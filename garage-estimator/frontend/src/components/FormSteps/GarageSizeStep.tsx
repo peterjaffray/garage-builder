@@ -59,11 +59,11 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({
                   key={`${size.width}x${size.length}`}
                   type="button"
                   onClick={() => handleSizeSelect(size.width, size.length)}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 ${
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 hover-option ${
                     formData.width === size.width &&
                     formData.length === size.length
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-300 bg-white text-gray-700"
+                      ? "selected-option"
+                      : "border-gray-300 bg-white"
                   }`}
                 >
                   <div className="flex flex-col items-center">
@@ -102,7 +102,7 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({
                 onChange={(e) =>
                   onUpdate({ width: parseInt(e.target.value) || undefined })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
                 required
               />
             </div>
@@ -119,7 +119,7 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({
                 onChange={(e) =>
                   onUpdate({ length: parseInt(e.target.value) || undefined })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring"
                 required
               />
             </div>
@@ -130,7 +130,7 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({
       <div className="flex justify-end">
         <button
           type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-6 py-2 rounded-md focus:outline-none focus:ring-2 primary-button focus-ring"
         >
           Next
         </button>

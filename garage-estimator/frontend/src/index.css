@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    color: #092B3D;
+  }
+  
+  p, span, div, label, button {
+    color: #092B3D;
+  }
+  
+  svg {
+    stroke: #092B3D;
+  }
+  
+  svg path {
+    stroke: #092B3D;
+  }
+}
+
+@layer utilities {
+  .selected-option {
+    border-color: #092B3D !important;
+    background-color: rgba(9, 43, 61, 0.05) !important;
+  }
+  
+  .hover-option:hover {
+    border-color: #092B3D !important;
+    background-color: rgba(9, 43, 61, 0.05) !important;
+  }
+  
+  .primary-button {
+    background-color: #3099FB !important;
+    color: white !important;
+  }
+  
+  .primary-button:hover {
+    background-color: #092B3D !important;
+  }
+  
+  .focus-ring:focus {
+    ring-color: #3099FB !important;
+    border-color: #3099FB !important;
+  }
+} 

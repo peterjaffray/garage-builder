@@ -142,11 +142,11 @@ const MultiStepForm: React.FC = () => {
   if (submitSuccess) {
     return (
       <div className="max-w-2xl mx-auto p-6 text-center">
-        <div className="bg-green-50 border border-green-200 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-green-800 mb-4">
+        <div className="border rounded-lg p-8" style={{ borderColor: "#3099FB", backgroundColor: "#FFFBF9" }}>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: "#092B3D" }}>
             Quote Request Submitted!
           </h2>
-          <p className="text-green-700">
+          <p style={{ color: "#092B3D" }}>
             Thank you for your interest. We'll review your garage specifications
             and send you a detailed quote within 24 hours.
           </p>
@@ -156,7 +156,10 @@ const MultiStepForm: React.FC = () => {
               setCurrentStep(0);
               setSubmitSuccess(false);
             }}
-            className="mt-6 px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+            className="mt-6 px-6 py-2 text-white rounded-md"
+            style={{ backgroundColor: "#3099FB", color: "white" }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#092B3D"}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#3099FB"}
           >
             Start New Quote
           </button>
@@ -179,9 +182,12 @@ const MultiStepForm: React.FC = () => {
               key={step.id}
               className={`flex-1 text-center text-sm ${
                 index <= currentStep
-                  ? "text-blue-600 font-semibold"
-                  : "text-gray-400"
+                  ? "font-semibold"
+                  : ""
               }`}
+              style={{
+                color: index <= currentStep ? "#092B3D" : "#9AC8F4"
+              }}
             >
               {/* Show numbers on small screens, labels on larger screens */}
               <span className="block sm:hidden">{index + 1}</span>
@@ -189,10 +195,11 @@ const MultiStepForm: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="relative h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#9AC8F4" }}>
           <div
-            className="absolute h-full bg-blue-600 transition-all duration-300"
+            className="absolute h-full transition-all duration-300"
             style={{
+              backgroundColor: "#092B3D",
               width: `${((currentStep + 1) / activeSteps.length) * 100}%`,
             }}
           />
@@ -211,7 +218,7 @@ const MultiStepForm: React.FC = () => {
 
       {/* Error Message */}
       {submitError && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md text-red-700">
+        <div className="mt-4 p-4 border rounded-md" style={{ borderColor: "#3099FB", backgroundColor: "#FFFBF9", color: "#092B3D" }}>
           {submitError}
         </div>
       )}
@@ -220,8 +227,8 @@ const MultiStepForm: React.FC = () => {
       {isSubmitting && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: "#3099FB" }}></div>
+            <p className="mt-4" style={{ color: "#092B3D" }}>
               Submitting your quote request...
             </p>
           </div>
