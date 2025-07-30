@@ -1,57 +1,64 @@
-import React from 'react';
-import { StepComponentProps } from '../../types/formTypes';
+import React from "react";
+import { StepComponentProps } from "../../types/formTypes";
 
-const InteriorFinishStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNext, onBack }) => {
+const InteriorFinishStep: React.FC<StepComponentProps> = ({
+  formData,
+  onUpdate,
+  onNext,
+  onBack,
+}) => {
   const finishOptions = [
-    { 
-      value: 'finished', 
-      label: 'Finished Interior',
-      description: 'Includes drywall or Trusscore walls and ceiling',
-      icon: '🏠'
+    {
+      value: "finished",
+      label: "Finished Interior",
+      description: "Includes drywall or Trusscore walls and ceiling",
+      image: "/FinishedInterior.jpg",
     },
-    { 
-      value: 'unfinished', 
-      label: 'Unfinished Interior',
-      description: 'Exposed framing and insulation',
-      icon: '🔨'
-    }
+    {
+      value: "unfinished",
+      label: "Unfinished Interior",
+      description: "Exposed framing and insulation",
+      image: "/UnfinishedInterior.jpg",
+    },
   ] as const;
 
-  const handleSelect = (finish: 'finished' | 'unfinished') => {
+  const handleSelect = (finish: "finished" | "unfinished") => {
     onUpdate({ interiorFinish: finish });
     onNext();
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">
-        Interior Finish
-      </h2>
-      
+      <h2 className="text-2xl font-bold text-gray-800">Interior Finish</h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {finishOptions.map((option) => (
           <button
             key={option.value}
-            onClick={() => handleSelect(option.value as 'finished' | 'unfinished')}
-            className={`p-6 border-2 rounded-lg text-center transition-all ${
+            onClick={() =>
+              handleSelect(option.value as "finished" | "unfinished")
+            }
+            className={`h-full p-6 border-2 rounded-lg text-center transition-all flex flex-col ${
               formData.interiorFinish === option.value
-                ? 'border-blue-500 bg-blue-50 shadow-lg'
-                : 'border-gray-300 hover:border-gray-400 hover:shadow-md'
+                ? "border-blue-500 bg-blue-50 shadow-lg"
+                : "border-gray-300 hover:border-gray-400 hover:shadow-md"
             }`}
           >
-            {/* Placeholder image */}
-            <div className="w-20 h-20 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
+            <div className="w-48 h-48 rounded-lg overflow-hidden mx-auto mb-4 flex-shrink-0">
+              <img
+                src={option.image}
+                alt={`${option.label} interior finish`}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="text-4xl mb-3">{option.icon}</div>
-            <div className="font-bold text-lg">{option.label}</div>
-            <div className="text-sm text-gray-600 mt-2">{option.description}</div>
+            <div className="font-bold text-lg mb-2">{option.label}</div>
+            <div className="text-sm text-gray-600 flex-grow flex items-end justify-center">
+              {option.description}
+            </div>
           </button>
         ))}
       </div>
-      
+
       <div className="flex justify-between">
         <button
           onClick={onBack}

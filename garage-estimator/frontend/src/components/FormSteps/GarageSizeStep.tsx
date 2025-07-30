@@ -1,7 +1,11 @@
-import React from 'react';
-import { StepComponentProps } from '../../types/formTypes';
+import React from "react";
+import { StepComponentProps } from "../../types/formTypes";
 
-const GarageSizeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNext }) => {
+const GarageSizeStep: React.FC<StepComponentProps> = ({
+  formData,
+  onUpdate,
+  onNext,
+}) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.width && formData.length) {
@@ -22,39 +26,64 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNe
     onUpdate({ width, length });
   };
 
+  // Calculate proportional dimensions for visual representation
+  const getProportionalDimensions = (width: number, length: number) => {
+    const maxDimension = Math.max(width, length);
+    const scale = 60 / maxDimension; // Scale to fit within 60px max dimension
+    return {
+      width: Math.round(width * scale),
+      height: Math.round(length * scale),
+    };
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           How large would you like your garage to be?
         </h2>
-        
+
         {/* Common Size Buttons */}
         <div className="mb-6">
           <h3 className="text-lg font-medium text-gray-700 mb-3">
             Choose a common size or enter custom dimensions below
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {commonSizes.map((size) => (
-              <button
-                key={`${size.width}x${size.length}`}
-                type="button"
-                onClick={() => handleSizeSelect(size.width, size.length)}
-                className={`p-4 rounded-lg border-2 transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 ${
-                  formData.width === size.width && formData.length === size.length
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-300 bg-white text-gray-700'
-                }`}
-              >
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-8 border-2 border-current mb-2 rounded"></div>
-                  <span className="font-medium">{size.label}</span>
-                </div>
-              </button>
-            ))}
+            {commonSizes.map((size) => {
+              const dimensions = getProportionalDimensions(
+                size.width,
+                size.length
+              );
+              return (
+                <button
+                  key={`${size.width}x${size.length}`}
+                  type="button"
+                  onClick={() => handleSizeSelect(size.width, size.length)}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 ${
+                    formData.width === size.width &&
+                    formData.length === size.length
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-gray-300 bg-white text-gray-700"
+                  }`}
+                >
+                  <div className="flex flex-col items-center">
+                    <div
+                      className="border-2 border-current mb-2 rounded bg-gray-100"
+                      style={{
+                        width: `${dimensions.width}px`,
+                        height: `${dimensions.height}px`,
+                        minWidth: "20px",
+                        minHeight: "20px",
+                      }}
+                    ></div>
+                    <span className="font-medium text-sm">{size.label}</span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
-        
+
         {/* Custom Dimensions */}
         <div>
           <h3 className="text-lg font-medium text-gray-700 mb-3">
@@ -69,13 +98,15 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNe
                 type="number"
                 min="10"
                 max="50"
-                value={formData.width || ''}
-                onChange={(e) => onUpdate({ width: parseInt(e.target.value) || undefined })}
+                value={formData.width || ""}
+                onChange={(e) =>
+                  onUpdate({ width: parseInt(e.target.value) || undefined })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Length (feet)
@@ -84,8 +115,10 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNe
                 type="number"
                 min="10"
                 max="50"
-                value={formData.length || ''}
-                onChange={(e) => onUpdate({ length: parseInt(e.target.value) || undefined })}
+                value={formData.length || ""}
+                onChange={(e) =>
+                  onUpdate({ length: parseInt(e.target.value) || undefined })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
@@ -93,7 +126,7 @@ const GarageSizeStep: React.FC<StepComponentProps> = ({ formData, onUpdate, onNe
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-end">
         <button
           type="submit"

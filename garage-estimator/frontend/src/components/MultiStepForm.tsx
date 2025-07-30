@@ -75,7 +75,6 @@ const MultiStepForm: React.FC = () => {
         width: formData.width,
         length: formData.length,
         height: parseInt(formData.wallHeight || '8'),
-        material: mapMaterialType(formData),
         features: mapFeatures(formData),
         message: formData.message,
         garageConfig: formData
@@ -101,17 +100,43 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
-  const mapMaterialType = (data: GarageFormData): string => {
-    if (data.wallCeilingMaterial === 'trusscore') return 'premium';
-    if (data.interiorFinish === 'finished') return 'standard';
-    return 'basic';
-  };
-
   const mapFeatures = (data: GarageFormData): string[] => {
     const features: string[] = [];
-    if (data.interiorFinish === 'finished') features.push('insulation');
-    if (data.atticStorage === 'yes') features.push('windows');
-    if (data.buildRequest === 'yes') features.push('electrical');
+    
+    // Map actual form selections to readable features
+    if (data.interiorFinish === 'finished') {
+      features.push('Finished Interior');
+    }
+    
+    if (data.wallCeilingMaterial === 'trusscore') {
+      features.push('Trusscore Walls & Ceiling');
+    } else if (data.wallCeilingMaterial === 'drywall') {
+      features.push('Drywall Walls & Ceiling');
+    }
+    
+    if (data.atticStorage === 'yes') {
+      features.push('Attic Storage');
+    }
+    
+    if (data.loftType) {
+      features.push(`${data.loftType === 'loft' ? 'Loft' : 'Attic'} Space`);
+    }
+    
+    if (data.roofDesign) {
+      const roofLabels: Record<string, string> = {
+        'gable1': 'Gable Style 1 Roof',
+        'gable2': 'Gable Style 2 Roof', 
+        'dutchGable1': 'Dutch Gable Roof',
+        'dummyDutchGable1': 'Dummy Dutch Gable Roof',
+        'cottage': 'Cottage Style Roof'
+      };
+      features.push(roofLabels[data.roofDesign] || 'Custom Roof Design');
+    }
+    
+    if (data.buildRequest === 'yes') {
+      features.push('Build Request');
+    }
+    
     return features;
   };
 
