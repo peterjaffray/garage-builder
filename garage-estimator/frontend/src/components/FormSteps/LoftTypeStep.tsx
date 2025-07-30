@@ -13,14 +13,14 @@ const LoftTypeStep: React.FC<StepComponentProps> = ({
       label: "Loft",
       description: "Open mezzanine level with railing",
       features: "Accessible by stairs or ladder, open to below",
-      image: "/Loft.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}Loft.jpg`,
     },
     {
       value: "attic",
       label: "Attic",
       description: "Enclosed storage space with pull-down stairs",
       features: "Maximum storage, accessed via ladder",
-      image: "/Attic.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}Attic.jpg`,
     },
   ] as const;
 

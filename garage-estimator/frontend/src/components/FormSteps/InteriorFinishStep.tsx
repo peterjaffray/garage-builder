@@ -12,13 +12,13 @@ const InteriorFinishStep: React.FC<StepComponentProps> = ({
       value: "finished",
       label: "Finished Interior",
       description: "Includes drywall or Trusscore walls and ceiling",
-      image: "/FinishedInterior.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}FinishedInterior.jpg`,
     },
     {
       value: "unfinished",
       label: "Unfinished Interior",
       description: "Exposed framing and insulation",
-      image: "/UnfinishedInterior.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}UnfinishedInterior.jpg`,
     },
   ] as const;
 

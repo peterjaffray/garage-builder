@@ -12,19 +12,19 @@ const WallHeightStep: React.FC<StepComponentProps> = ({
       value: "8",
       label: "8 feet",
       description: "Standard height",
-      image: "/8feeet.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}8feeet.jpg`,
     },
     {
       value: "9",
       label: "9 feet",
       description: "Extra headroom",
-      image: "/9feet.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}9feet.jpg`,
     },
     {
       value: "10",
       label: "10 feet",
       description: "Even more headroom",
-      image: "/10feet.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}10feet.jpg`,
     },
   ] as const;
 

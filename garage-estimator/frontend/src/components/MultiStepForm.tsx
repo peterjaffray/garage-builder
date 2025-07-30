@@ -1,71 +1,70 @@
-import React, { useState } from 'react';
-import { GarageFormData, FormStep } from '../types/formTypes';
-import GarageSizeStep from './FormSteps/GarageSizeStep';
-import WallHeightStep from './FormSteps/WallHeightStep';
-import InteriorFinishStep from './FormSteps/InteriorFinishStep';
-import WallCeilingMaterialStep from './FormSteps/WallCeilingMaterialStep';
-import AtticStorageStep from './FormSteps/AtticStorageStep';
-import LoftTypeStep from './FormSteps/LoftTypeStep';
-import RoofDesignStep from './FormSteps/RoofDesignStep';
-import BuildRequestStep from './FormSteps/BuildRequestStep';
-import CustomerInfoStep from './FormSteps/CustomerInfoStep';
-import { DebugPanel } from './DebugPanel';
+import React, { useState } from "react";
+import { FormStep, GarageFormData } from "../types/formTypes";
+import AtticStorageStep from "./FormSteps/AtticStorageStep";
+import BuildRequestStep from "./FormSteps/BuildRequestStep";
+import CustomerInfoStep from "./FormSteps/CustomerInfoStep";
+import GarageSizeStep from "./FormSteps/GarageSizeStep";
+import InteriorFinishStep from "./FormSteps/InteriorFinishStep";
+import LoftTypeStep from "./FormSteps/LoftTypeStep";
+import RoofDesignStep from "./FormSteps/RoofDesignStep";
+import WallCeilingMaterialStep from "./FormSteps/WallCeilingMaterialStep";
+import WallHeightStep from "./FormSteps/WallHeightStep";
 
 const MultiStepForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<GarageFormData>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const steps: FormStep[] = [
-    { id: 'size', label: 'Garage Size', component: GarageSizeStep },
-    { id: 'wallHeight', label: 'Wall Height', component: WallHeightStep },
-    { id: 'finish', label: 'Interior Finish', component: InteriorFinishStep },
-    { 
-      id: 'material', 
-      label: 'Wall Material', 
+    { id: "size", label: "Garage Size", component: GarageSizeStep },
+    { id: "wallHeight", label: "Wall Height", component: WallHeightStep },
+    { id: "finish", label: "Interior Finish", component: InteriorFinishStep },
+    {
+      id: "material",
+      label: "Wall Material",
       component: WallCeilingMaterialStep,
-      dependsOn: (data) => data.interiorFinish === 'finished'
+      dependsOn: (data) => data.interiorFinish === "finished",
     },
-    { id: 'atticStorage', label: 'Attic Storage', component: AtticStorageStep },
-    { 
-      id: 'loftType', 
-      label: 'Loft Type', 
+    { id: "atticStorage", label: "Attic Storage", component: AtticStorageStep },
+    {
+      id: "loftType",
+      label: "Loft Type",
       component: LoftTypeStep,
-      dependsOn: (data) => data.atticStorage === 'yes'
+      dependsOn: (data) => data.atticStorage === "yes",
     },
-    { id: 'roofDesign', label: 'Roof Design', component: RoofDesignStep },
-    { id: 'buildRequest', label: 'Build Request', component: BuildRequestStep },
-    { id: 'customerInfo', label: 'Contact Info', component: CustomerInfoStep }
+    { id: "roofDesign", label: "Roof Design", component: RoofDesignStep },
+    { id: "buildRequest", label: "Build Request", component: BuildRequestStep },
+    { id: "customerInfo", label: "Contact Info", component: CustomerInfoStep },
   ];
 
   const getActiveSteps = () => {
-    return steps.filter(step => !step.dependsOn || step.dependsOn(formData));
+    return steps.filter((step) => !step.dependsOn || step.dependsOn(formData));
   };
 
   const activeSteps = getActiveSteps();
   const currentActiveStep = activeSteps[currentStep];
 
   const handleUpdate = (data: Partial<GarageFormData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
+    setFormData((prev) => ({ ...prev, ...data }));
   };
 
   const handleNext = async () => {
     if (currentStep === activeSteps.length - 1) {
       await handleSubmit();
     } else {
-      setCurrentStep(prev => Math.min(prev + 1, activeSteps.length - 1));
+      setCurrentStep((prev) => Math.min(prev + 1, activeSteps.length - 1));
     }
   };
 
   const handleBack = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 0));
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    setSubmitError('');
+    setSubmitError("");
 
     try {
       const requestData = {
@@ -74,27 +73,27 @@ const MultiStepForm: React.FC = () => {
         phone: formData.customerPhone,
         width: formData.width,
         length: formData.length,
-        height: parseInt(formData.wallHeight || '8'),
+        height: parseInt(formData.wallHeight || "8"),
         features: mapFeatures(formData),
         message: formData.message,
-        garageConfig: formData
+        garageConfig: formData,
       };
 
       const response = await fetch(`${import.meta.env.BASE_URL}api/estimates`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit estimate');
+        throw new Error("Failed to submit estimate");
       }
 
       setSubmitSuccess(true);
     } catch (error) {
-      setSubmitError('Failed to submit estimate. Please try again.');
+      setSubmitError("Failed to submit estimate. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -102,41 +101,41 @@ const MultiStepForm: React.FC = () => {
 
   const mapFeatures = (data: GarageFormData): string[] => {
     const features: string[] = [];
-    
+
     // Map actual form selections to readable features
-    if (data.interiorFinish === 'finished') {
-      features.push('Finished Interior');
+    if (data.interiorFinish === "finished") {
+      features.push("Finished Interior");
     }
-    
-    if (data.wallCeilingMaterial === 'trusscore') {
-      features.push('Trusscore Walls & Ceiling');
-    } else if (data.wallCeilingMaterial === 'drywall') {
-      features.push('Drywall Walls & Ceiling');
+
+    if (data.wallCeilingMaterial === "trusscore") {
+      features.push("Trusscore Walls & Ceiling");
+    } else if (data.wallCeilingMaterial === "drywall") {
+      features.push("Drywall Walls & Ceiling");
     }
-    
-    if (data.atticStorage === 'yes') {
-      features.push('Attic Storage');
+
+    if (data.atticStorage === "yes") {
+      features.push("Attic Storage");
     }
-    
+
     if (data.loftType) {
-      features.push(`${data.loftType === 'loft' ? 'Loft' : 'Attic'} Space`);
+      features.push(`${data.loftType === "loft" ? "Loft" : "Attic"} Space`);
     }
-    
+
     if (data.roofDesign) {
       const roofLabels: Record<string, string> = {
-        'gable1': 'Gable Style 1 Roof',
-        'gable2': 'Gable Style 2 Roof', 
-        'dutchGable1': 'Dutch Gable Roof',
-        'dummyDutchGable1': 'Dummy Dutch Gable Roof',
-        'cottage': 'Cottage Style Roof'
+        gable1: "Gable Style 1 Roof",
+        gable2: "Gable Style 2 Roof",
+        dutchGable1: "Dutch Gable Roof",
+        dummyDutchGable1: "Dummy Dutch Gable Roof",
+        cottage: "Cottage Style Roof",
       };
-      features.push(roofLabels[data.roofDesign] || 'Custom Roof Design');
+      features.push(roofLabels[data.roofDesign] || "Custom Roof Design");
     }
-    
-    if (data.buildRequest === 'yes') {
-      features.push('Build Request');
+
+    if (data.buildRequest === "yes") {
+      features.push("Build Request");
     }
-    
+
     return features;
   };
 
@@ -144,9 +143,12 @@ const MultiStepForm: React.FC = () => {
     return (
       <div className="max-w-2xl mx-auto p-6 text-center">
         <div className="bg-green-50 border border-green-200 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-green-800 mb-4">Quote Request Submitted!</h2>
+          <h2 className="text-2xl font-bold text-green-800 mb-4">
+            Quote Request Submitted!
+          </h2>
           <p className="text-green-700">
-            Thank you for your interest. We'll review your garage specifications and send you a detailed quote within 24 hours.
+            Thank you for your interest. We'll review your garage specifications
+            and send you a detailed quote within 24 hours.
           </p>
           <button
             onClick={() => {
@@ -176,7 +178,9 @@ const MultiStepForm: React.FC = () => {
             <div
               key={step.id}
               className={`flex-1 text-center text-sm ${
-                index <= currentStep ? 'text-blue-600 font-semibold' : 'text-gray-400'
+                index <= currentStep
+                  ? "text-blue-600 font-semibold"
+                  : "text-gray-400"
               }`}
             >
               {/* Show numbers on small screens, labels on larger screens */}
@@ -188,7 +192,9 @@ const MultiStepForm: React.FC = () => {
         <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className="absolute h-full bg-blue-600 transition-all duration-300"
-            style={{ width: `${((currentStep + 1) / activeSteps.length) * 100}%` }}
+            style={{
+              width: `${((currentStep + 1) / activeSteps.length) * 100}%`,
+            }}
           />
         </div>
       </div>
@@ -215,13 +221,15 @@ const MultiStepForm: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Submitting your quote request...</p>
+            <p className="mt-4 text-gray-600">
+              Submitting your quote request...
+            </p>
           </div>
         </div>
       )}
 
-      {/* Debug Panel */}
-      <DebugPanel formData={formData} currentStep={currentStep} />
+      {/* Debug Panel - Hidden */}
+      {/* <DebugPanel formData={formData} currentStep={currentStep} /> */}
     </div>
   );
 };

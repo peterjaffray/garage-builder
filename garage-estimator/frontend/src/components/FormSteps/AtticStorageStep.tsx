@@ -12,13 +12,13 @@ const AtticStorageStep: React.FC<StepComponentProps> = ({
       value: "yes",
       label: "Add Attic Storage",
       description: "Extra storage space above the garage",
-      image: "/AtticStorage.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}AtticStorage.jpg`,
     },
     {
       value: "no",
       label: "No Attic Storage",
       description: "Standard ceiling height throughout",
-      image: "/NoAtticStorage.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}NoAtticStorage.jpg`,
     },
   ] as const;
 

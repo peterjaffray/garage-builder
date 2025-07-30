@@ -13,14 +13,14 @@ const WallCeilingMaterialStep: React.FC<StepComponentProps> = ({
       label: "Drywall",
       description: "Traditional drywall finish, painted",
       pros: "Cost-effective, smooth finish",
-      image: "/Drywall.JPG",
+      image: `${import.meta.env.VITE_BASE_URL}Drywall.JPG`,
     },
     {
       value: "trusscore",
       label: "Trusscore",
       description: "PVC wall and ceiling panels",
       pros: "Water-resistant, durable, easy to clean",
-      image: "/Trusscore.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}Trusscore.jpg`,
     },
   ] as const;
 

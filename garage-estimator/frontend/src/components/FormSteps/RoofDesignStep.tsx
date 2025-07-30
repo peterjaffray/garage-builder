@@ -12,13 +12,13 @@ const RoofDesignStep: React.FC<StepComponentProps> = ({
       value: "gable1",
       label: "Gable Style 1",
       description: "Traditional A-frame roof",
-      image: "/GableStyle1.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}GableStyle1.jpg`,
     },
     {
       value: "gable2",
       label: "Gable Style 2",
       description: "Traditional A-frame roof, peaked in alternate direction",
-      image: "/GableStyle2.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}GableStyle2.jpg`,
     },
   ];
 
@@ -27,19 +27,19 @@ const RoofDesignStep: React.FC<StepComponentProps> = ({
       value: "dutchGable1",
       label: "Dutch Gable",
       description: "Combination of gable and hip roof",
-      image: "/DutchGable.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}DutchGable.jpg`,
     },
     {
       value: "dummyDutchGable1",
       label: "Dummy Dutch Gable",
       description: "Decorative Dutch gable style",
-      image: "/DummyDutchGable.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}DummyDutchGable.jpg`,
     },
     {
       value: "cottage",
       label: "Cottage Style",
       description: "Charming cottage-inspired roof",
-      image: "/CottageStyle.jpg",
+      image: `${import.meta.env.VITE_BASE_URL}CottageStyle.jpg`,
     },
   ];
 
