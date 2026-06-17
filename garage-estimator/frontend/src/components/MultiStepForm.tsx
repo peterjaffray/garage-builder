@@ -92,6 +92,32 @@ const MultiStepForm: React.FC = () => {
       }
 
       setSubmitSuccess(true);
+
+      // Fire the lead conversion on the parent page's dataLayer. The estimator
+      // runs in a same-origin iframe under /gbd/, so window.parent is reachable.
+      // GTM container GTM-PQ2XJ3V uses the CUFT (Choice Universal Form Tracking)
+      // schema: the "CUFT - Lead Generated" trigger fires the Google Ads Generate
+      // Lead conversion + GA4 lead event when event=generate_lead AND
+      // cuft_tracked is true. user_email/user_phone feed enhanced conversions
+      // (GTM hashes them client-side via the CUFT sha256 variables).
+      try {
+        const dl =
+          window.parent && window.parent !== window
+            ? (window.parent as any)
+            : (window as any);
+        dl.dataLayer = dl.dataLayer || [];
+        dl.dataLayer.push({
+          event: "generate_lead",
+          cuft_tracked: true,
+          form_id: "garage_estimator",
+          form_name: "Garage Info Request",
+          user_email: formData.customerEmail || "",
+          user_phone: formData.customerPhone || "",
+          currency: "CAD",
+        });
+      } catch (e) {
+        // Parent unreachable (cross-origin); never block the success state.
+      }
     } catch (error) {
       setSubmitError("Failed to submit estimate. Please try again.");
     } finally {
