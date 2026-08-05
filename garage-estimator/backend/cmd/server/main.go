@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	_ "time/tzdata" // embeds the IANA tz database; the alpine runtime image has none on disk
 
 	"garage-estimator/pkg/handlers"
 )
@@ -31,6 +32,10 @@ func main() {
 	log.Printf("MAIL_FROM: %s", maskEmpty(os.Getenv("MAIL_FROM")))
 	log.Printf("MAIL_TO: %s", maskEmpty(os.Getenv("MAIL_TO")))
 	log.Printf("RECAPTCHA_SECRET: %s", maskSensitive(os.Getenv("RECAPTCHA_SECRET")))
+	log.Printf("SHEET_ID: %s", maskEmpty(os.Getenv("SHEET_ID")))
+	log.Printf("SHEET_TAB: %s", maskEmpty(os.Getenv("SHEET_TAB")))
+	log.Printf("GOOGLE_APPLICATION_CREDENTIALS: %s", maskEmpty(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")))
+	log.Printf("INGEST_SHARED_SECRET: %s", maskSensitive(os.Getenv("INGEST_SHARED_SECRET")))
 	log.Println("===========================")
 
 	// Send system startup email
@@ -40,6 +45,7 @@ func main() {
 	http.HandleFunc("/api/hello", helloHandler)
 	http.HandleFunc("/api/estimates", handlers.EstimateHandler)
 	http.HandleFunc("/api/test-email", testEmailHandler)
+	http.HandleFunc("/ingest", handlers.IngestHandler)
 
 	log.Printf("🚀 Garage Estimator API running on port %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

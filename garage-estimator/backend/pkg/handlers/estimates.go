@@ -19,6 +19,10 @@ type EstimateRequest struct {
 	Features     []string               `json:"features"`
 	Message      string                 `json:"message,omitempty"`
 	GarageConfig map[string]interface{} `json:"garageConfig,omitempty"`
+	// Attribution carries whatever CUFT itself captured (utm_source..utm_content,
+	// click_id, gclid, gbraid, wbraid, fbclid, msclkid, ...), forwarded verbatim
+	// from the cuft_utm_data cookie. Keys not present in a given visit are absent.
+	Attribution map[string]string `json:"attribution,omitempty"`
 }
 
 // EstimateResponse returns the full estimate object
@@ -212,14 +216,8 @@ Please contact the customer to discuss details and provide a quote.`,
 		formatFeaturesText(req.Features),
 		formatMessageText(req.Message))
 
-	// Send HTML email
-	if err := SendHTMLEmail(uniqueSubject, htmlBody); err != nil {
-		return fmt.Errorf("failed to send HTML email: %v", err)
-	}
-
-	// Send text email
-	if err := SendEmail(uniqueSubject, textBody); err != nil {
-		return fmt.Errorf("failed to send text email: %v", err)
+	if err := SendMultipartEmail(uniqueSubject, textBody, htmlBody); err != nil {
+		return fmt.Errorf("failed to send estimate email: %v", err)
 	}
 
 	return nil
@@ -390,6 +388,10 @@ func EstimateHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		log.Printf("📧 Estimate email sent successfully")
 	}
+
+	// Sheet append never blocks the response or the email send; a Sheets
+	// outage must not affect the lead reaching the recipients' inboxes.
+	go AppendEstimatorLead(req)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)

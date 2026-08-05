@@ -9,6 +9,7 @@ import LoftTypeStep from "./FormSteps/LoftTypeStep";
 import RoofDesignStep from "./FormSteps/RoofDesignStep";
 import WallCeilingMaterialStep from "./FormSteps/WallCeilingMaterialStep";
 import WallHeightStep from "./FormSteps/WallHeightStep";
+import { captureAttribution } from "../lib/attribution";
 
 const MultiStepForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -77,6 +78,7 @@ const MultiStepForm: React.FC = () => {
         features: mapFeatures(formData),
         message: formData.message,
         garageConfig: formData,
+        attribution: captureAttribution(),
       };
 
       const response = await fetch(`${import.meta.env.BASE_URL}api/estimates`, {
