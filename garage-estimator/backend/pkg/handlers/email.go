@@ -53,13 +53,17 @@ func SendEmail(subject, body string) error {
 	
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	
+	// Log email attempt
+	log.Printf("📧 Attempting to send email - From: %s, To: %s, Subject: %s", config.From, config.To, subject)
+	
 	// Send email
 	err := smtp.SendMail(addr, auth, config.From, []string{config.To}, []byte(message))
 	if err != nil {
+		log.Printf("❌ Failed to send email - From: %s, To: %s, Subject: %s, Error: %v", config.From, config.To, subject, err)
 		return fmt.Errorf("failed to send email: %v", err)
 	}
 	
-	log.Printf("📧 Email sent successfully: %s", subject)
+	log.Printf("✅ Email sent successfully - From: %s, To: %s, Subject: %s", config.From, config.To, subject)
 	return nil
 }
 
@@ -86,13 +90,17 @@ func SendHTMLEmail(subject, htmlBody string) error {
 	
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	
+	// Log email attempt
+	log.Printf("📧 Attempting to send HTML email - From: %s, To: %s, Subject: %s", config.From, config.To, subject)
+	
 	// Send email
 	err := smtp.SendMail(addr, auth, config.From, []string{config.To}, []byte(message))
 	if err != nil {
+		log.Printf("❌ Failed to send HTML email - From: %s, To: %s, Subject: %s, Error: %v", config.From, config.To, subject, err)
 		return fmt.Errorf("failed to send HTML email: %v", err)
 	}
 	
-	log.Printf("📧 HTML email sent successfully: %s", subject)
+	log.Printf("✅ HTML email sent successfully - From: %s, To: %s, Subject: %s", config.From, config.To, subject)
 	return nil
 }
 
@@ -110,7 +118,5 @@ The system is ready to receive garage estimate requests.`, time.Now().Format("20
 	err := SendEmail(subject, body)
 	if err != nil {
 		log.Printf("⚠️ Failed to send startup email: %v", err)
-	} else {
-		log.Printf("✅ System startup email sent successfully")
 	}
 } 
